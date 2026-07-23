@@ -21,10 +21,15 @@ def main():
             "content": "Why is Boot.dev such a great place to learn backend development? Use one paragraph maximum.",
         }
     ]
-
     response = client.chat.completions.create(model="openrouter/free", messages=messages)
 
-    print(response.choices[0].message.content)
+    if response.usage is None:
+        raise RuntimeError("failed API request")
+    
+    print(f"User prompt: {messages[0]["content"]}")
+    print(f"Prompt tokens: {response.usage.prompt_tokens}")
+    print(f"Response tokens: {response.usage.completion_tokens}")
+    print(f"Response: {response.choices[0].message.content}")
 
 
 if __name__ == "__main__":
